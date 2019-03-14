@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}MY SHOP{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+    {% block header %}
+        <header>
+            <div class="navbar navbar-default navbar-static-top" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a href="{{ path('homepage') }}" class="navbar-brand">MY SHOP</a>
+                    </div>
+                    <div>
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if app.user %}
+                            <li>
+                                <a href="{{ path('user_index') }}">
+                                    Users
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('product_index') }}">
+                                    Products
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Cart
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('security_logout') }}">
+                                    LOGOUT
+                                </a>
+                            </li>
+                            {% else %}
+                            <li>
+                                <a href="{{ path('user_new') }}">
+                                    REGISTER
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('security_login') }}">
+                                    LOGIN
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+    {% endblock %}
+        {% block body %}
+        {% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<form name="authenticate" class="form-horizontal" action="{{ path('security_login') }}" method="post">
+
+<h1>Login</h1>
+<input type="text" class="form-control" id="user_email" placeholder="Email" name="_username">
+<input type="password" class="form-control" id="password" placeholder="Password" name="_password">
+<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+<a class="btn btn-default" href="{{ path('homepage') }}">Cancel</a>
+<button type="submit" class="btn btn-primary">Login</button>
+</form>
+{% endblock %}
