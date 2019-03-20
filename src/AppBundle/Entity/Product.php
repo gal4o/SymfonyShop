@@ -46,9 +46,23 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="price", type="decimal", precision=14, scale=2)
+     * @ORM\Column(name="price", type="decimal", precision=10, scale=2)
      */
     private $price;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="added_on", type="datetime")
+     */
+    private $addedOn;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="image", type="text")
+     */
+    private $image;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="products")
@@ -57,15 +71,72 @@ class Product
     private $category;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserOrder", inversedBy="products")
-     * @ORM\JoinColumn(name="orderId", referencedColumnName="id")
-     * @var UserOrder[]|ArrayCollection
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Cart", inversedBy="products")
+     * @var Cart|ArrayCollection
      */
-    private $orders;
+    private $carts;
+
+
 
     public function __construct()
     {
-        $this->orders = new ArrayCollection();
+        $this->addedOn = new \DateTime();
+        $this->carts = new ArrayCollection();
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getAddedOn()
+    {
+        return $this->addedOn;
+    }
+
+    /**
+     * @param \DateTime $addedOn
+     * @return Product
+     */
+    public function setAddedOn($addedOn)
+    {
+        $this->addedOn = $addedOn;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     * @return Product
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+        return $this;
+    }
+
+
+    /**
+     * @return Cart[]|ArrayCollection
+     */
+    public function getCarts()
+    {
+        return $this->carts;
+    }
+
+    /**
+     * @param Cart|ArrayCollection $carts
+     * @return Product
+     */
+    public function addCarts(Cart $carts)
+    {
+        $this->carts[] = $carts;
+        return $this;
     }
 
     /**
@@ -153,7 +224,7 @@ class Product
     /**
      * Set price
      *
-     * @param string $price
+     * @param float $price
      *
      * @return Product
      */
@@ -167,7 +238,7 @@ class Product
     /**
      * Get price
      *
-     * @return string
+     * @return float
      */
     public function getPrice()
     {
@@ -191,24 +262,6 @@ class Product
         $this->category = $category;
         return $this;
     }
-
-//    /**
-//     * @return User[]|ArrayCollection
-//     */
-//    public function getUsers()
-//    {
-//        return $this->users;
-//    }
-//
-//    /**
-//     * @param User[]|ArrayCollection $users
-//     * @return Product
-//     */
-//    public function setUsers($users)
-//    {
-//        $this->users[] = $users;
-//        return $this;
-//    }
 
 }
 

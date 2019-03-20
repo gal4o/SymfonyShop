@@ -30,15 +30,13 @@
 
     <ul>
         <li>
-            <a href="{{ path('product_index') }}">Back to the list</a>
+            <a href="{{ path('cart_add', {'id': product.id}) }}">Buy</a>
+        </li>
+        <li>
+            <a href="{{ path('product_index') }}">Back to the products list</a>
         </li>
         <li>
             <a href="{{ path('product_edit', { 'id': product.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
         </li>
     </ul>
 {% endblock %}

@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>User edit</h1>
+    <h1>Delivery Details</h1>
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+        <input type="submit" value="Verify" />
     {{ form_end(edit_form) }}
 
     <ul>
         <li>
-            <a href="{{ path('user_index') }}">Back to the list</a>
+            <a href="{{ path('cart_index') }}">Back to the cart list</a>
         </li>
     </ul>
 {% endblock %}

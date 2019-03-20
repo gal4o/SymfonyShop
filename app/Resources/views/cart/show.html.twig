@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Cart</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ cart.id }}</td>
+            </tr>
+            <tr>
+                <th>Products</th>
+                <td>{% if cart.products %}
+                        {% for product in cart.products %}
+                            <div>
+                                <p>{{ product.getName() }}
+                                {{ product.getPrice }}
+                                <a href="{{ path('cart_remove', {'id': product.getId()}) }}">Remove product</a>
+                                </p>
+                            </div>
+                        {% endfor %}
+                    {% endif %}</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>{{ cart.total }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('cart_index') }}">Back to the carts list</a>
+        </li>
+        <li>
+            <a href="{{ path('cart_verify', { 'id': cart.id }) }}">Verify</a>
+        </li>
+    </ul>
+{% endblock %}

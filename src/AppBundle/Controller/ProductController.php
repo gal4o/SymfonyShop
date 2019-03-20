@@ -24,6 +24,7 @@ class ProductController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
+        /** @var Product $products */
         $products = $em->getRepository('AppBundle:Product')->findAll();
 
         return $this->render('product/index.html.twig', array(
@@ -36,6 +37,8 @@ class ProductController extends Controller
      *
      * @Route("/new", name="product_new")
      * @Method({"GET", "POST"})
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request)
     {
@@ -47,7 +50,7 @@ class ProductController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
-
+            $this->addFlash('info', "Product is added successfully!");
             return $this->redirectToRoute('product_show', array('id' => $product->getId()));
         }
 
@@ -62,14 +65,14 @@ class ProductController extends Controller
      *
      * @Route("/{id}", name="product_show")
      * @Method("GET")
+     * @param Product $product
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Product $product)
     {
-        $deleteForm = $this->createDeleteForm($product);
 
         return $this->render('product/show.html.twig', array(
             'product' => $product,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -78,59 +81,27 @@ class ProductController extends Controller
      *
      * @Route("/{id}/edit", name="product_edit")
      * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Product $product
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, Product $product)
     {
-        $deleteForm = $this->createDeleteForm($product);
         $editForm = $this->createForm('AppBundle\Form\ProductType', $product);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
+            $this->getDoctrine()
+                ->getManager()
+                ->flush();
+            $this->addFlash('info', "Product is edited successfully!");
             return $this->redirectToRoute('product_edit', array('id' => $product->getId()));
         }
 
         return $this->render('product/edit.html.twig', array(
             'product' => $product,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
-    /**
-     * Deletes a product entity.
-     *
-     * @Route("/{id}", name="product_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, Product $product)
-    {
-        $form = $this->createDeleteForm($product);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($product);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('product_index');
-    }
-
-    /**
-     * Creates a form to delete a product entity.
-     *
-     * @param Product $product The product entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Product $product)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('product_delete', array('id' => $product->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
-    }
 }

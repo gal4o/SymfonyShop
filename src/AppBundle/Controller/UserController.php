@@ -4,8 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
-use AppBundle\Entity\UserOrder;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use AppBundle\Services\CartServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,15 +17,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends Controller
 {
     /**
+     * @var CartServiceInterface
+     */
+    private $cartService;
+
+    public function __construct(CartServiceInterface $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
+    /**
      * Lists all user entities.
      *
      * @Route("/", name="user_index")
-     * @Method("GET")
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
+        /** @var User[] $users */
         $users = $em->getRepository('AppBundle:User')->findAll();
 
         return $this->render('user/index.html.twig', array(
@@ -38,7 +46,8 @@ class UserController extends Controller
      * Creates a new user entity.
      *
      * @Route("/new", name="user_new")
-     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request)
     {
@@ -53,12 +62,13 @@ class UserController extends Controller
             $roleRepository = $this->getDoctrine()->getRepository(Role::class);
             $userRole = $roleRepository->findOneBy(['name' => 'ROLE_USER']);
             $user->setRole($userRole);
-//            $user->setOrders(null);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-
-            return $this->redirectToRoute('user_show', array('id' => $user->getId()));
+            $em->persist($this->cartService->createCart($user));
+            $em->flush();
+            $this->addFlash('info', "Your registry is successfully!");
+            return $this->redirectToRoute('security_login');
         }
 
         return $this->render('user/new.html.twig', array(
@@ -71,15 +81,14 @@ class UserController extends Controller
      * Finds and displays a user entity.
      *
      * @Route("/{id}", name="user_show")
-     * @Method("GET")
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(User $user)
     {
-        $deleteForm = $this->createDeleteForm($user);
 
         return $this->render('user/show.html.twig', array(
             'user' => $user,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -87,11 +96,12 @@ class UserController extends Controller
      * Displays a form to edit an existing user entity.
      *
      * @Route("/{id}/edit", name="user_edit")
-     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, User $user)
     {
-        $deleteForm = $this->createDeleteForm($user);
         $editForm = $this->createForm('AppBundle\Form\UserType', $user);
         $editForm->handleRequest($request);
 
@@ -107,43 +117,7 @@ class UserController extends Controller
         return $this->render('user/edit.html.twig', array(
             'user' => $user,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
-    /**
-     * Deletes a user entity.
-     *
-     * @Route("/{id}", name="user_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, User $user)
-    {
-        $form = $this->createDeleteForm($user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($user);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('user_index');
-    }
-
-    /**
-     * Creates a form to delete a user entity.
-     *
-     * @param User $user The user entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(User $user)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('user_delete', array('id' => $user->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
-    }
 }

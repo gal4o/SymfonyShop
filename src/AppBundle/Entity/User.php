@@ -53,36 +53,36 @@ class User implements UserInterface
      */
     private $roles;
 
-//    /**
-//     * @var UserOrder|ArrayCollection
-//     *
-//     * @ORM\OneToMany(targetEntity="AppBundle\Entity\UserOrder", mappedBy="user")
-//     */
-//    private $orders;
+    /**
+     * @var Cart[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Cart", mappedBy="user", cascade={"persist"})
+     */
+    private $carts;
 
     public function __construct()
     {
         $this->roles = new ArrayCollection();
-//        $this->orders = new ArrayCollection();
+        $this->carts = new ArrayCollection();
     }
 
-//    /**
-//     * @return UserOrder[]|ArrayCollection
-//     */
-//    public function getOrders()
-//    {
-//        return $this->orders;
-//    }
-//
-//    /**
-//     * @param UserOrder|ArrayCollection $orders
-//     * @return User
-//     */
-//    public function setOrders($orders)
-//    {
-//        $this->orders[] = $orders;
-//        return $this;
-//    }
+    /**
+     * @return Cart[]|ArrayCollection
+     */
+    public function getCarts()
+    {
+        return $this->carts;
+    }
+
+    /**
+     * @param Cart|ArrayCollection $cart
+     * @return User
+     */
+    public function addCart($cart)
+    {
+        $this->carts[] = $cart;
+        return $this;
+    }
 
     /**
      * @param Role|ArrayCollection $role
@@ -232,6 +232,14 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return in_array("ROLE_ADMIN", $this->getRoles());
     }
 }
 
