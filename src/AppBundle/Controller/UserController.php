@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use AppBundle\Services\CartServiceInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,24 +28,6 @@ class UserController extends Controller
     }
 
     /**
-     * Lists all user entities.
-     *
-     * @Route("/", name="user_index")
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        /** @var User[] $users */
-        $users = $em->getRepository('AppBundle:User')->findAll();
-
-        return $this->render('user/index.html.twig', array(
-            'users' => $users,
-        ));
-    }
-
-    /**
-     * Creates a new user entity.
-     *
      * @Route("/new", name="user_new")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -64,7 +47,6 @@ class UserController extends Controller
             $user->setRole($userRole);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
-            $em->flush();
             $em->persist($this->cartService->createCart($user));
             $em->flush();
             $this->addFlash('info', "Your registry is successfully!");
@@ -79,8 +61,8 @@ class UserController extends Controller
 
     /**
      * Finds and displays a user entity.
-     *
-     * @Route("/{id}", name="user_show")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Route("/show}", name="user_show")
      * @param User $user
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -93,9 +75,8 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing user entity.
-     *
      * @Route("/{id}/edit", name="user_edit")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param Request $request
      * @param User $user
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -111,7 +92,7 @@ class UserController extends Controller
             $user->setPassword($password);
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('user_edit', array('id' => $user->getId()));
+            return $this->redirectToRoute('user_show', array('id' => $user->getId()));
         }
 
         return $this->render('user/edit.html.twig', array(

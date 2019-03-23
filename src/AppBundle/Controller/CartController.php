@@ -12,14 +12,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Cart controller.
- *
+ * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  * @Route("cart")
  */
 class CartController extends Controller
 {
     /**
      * @Route("/add/{id}", name="cart_add")
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -79,6 +78,7 @@ class CartController extends Controller
         return $this->redirectToRoute("cart_show");
 
     }
+
     /**
      * Lists all cart entities.
      *
@@ -86,10 +86,10 @@ class CartController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $carts = $em->getRepository('AppBundle:Cart')->findAll();
-
+        /** @var Cart $carts */
+        $carts = $this->getDoctrine()
+            ->getRepository(Cart::class)
+            ->findBy(['user' => $this->getUser()->getId()]);
         return $this->render('cart/index.html.twig', array(
             'carts' => $carts,
         ));
@@ -114,5 +114,21 @@ class CartController extends Controller
             'cart' => $cart,
         ));
     }
+
+    /**
+     * @Route("/showOne/{id}", name="cart_show_one")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showOneAction($id)
+    {
+        $cart = $this->getDoctrine()
+            ->getRepository(Cart::class)
+            ->find($id);
+        return $this->render('cart/showOne.html.twig', array(
+            'cart' => $cart,
+        ));
+    }
+
 
 }

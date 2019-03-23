@@ -10,20 +10,18 @@
                 <th>User</th>
                 <th>Total</th>
                 <th>Actions</th>
-                <th>Verify</th>
             </tr>
         </thead>
         <tbody>
-
-{% for cart in carts %}
+        {% for cart in carts %}
             <tr>
-                <td><a href="{{ path('cart_show_one', { 'id': cart.id }) }}">{{ cart.id }}</a></td>
+                <td><a href="{{ path('admin_cart_show', { 'id': cart.id }) }}">{{ cart.id }}</a></td>
                 <td>{{ cart.total }}</td>
                 <td>{{ cart.user.fullName }}</td>
                 <td>
                     <ul>
                         <li>
-                            <a href="{{ path('cart_show_one', { 'id': cart.id }) }}">show</a>
+                            <a href="{{ path('admin_cart_show', { 'id': cart.id }) }}">show</a>
                         </li>
                     </ul>
                 </td>

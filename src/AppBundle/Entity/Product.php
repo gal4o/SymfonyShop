@@ -4,12 +4,15 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Product
  *
  * @ORM\Table(name="products")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductRepository")
+ * @Vich\Uploadable
  */
 class Product
 {
@@ -58,9 +61,7 @@ class Product
     private $addedOn;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="image", type="text")
+     * @ORM\Column(type="string")
      */
     private $image;
 
@@ -102,24 +103,17 @@ class Product
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getImage()
     {
         return $this->image;
     }
 
-    /**
-     * @param string $image
-     * @return Product
-     */
     public function setImage($image)
     {
         $this->image = $image;
+
         return $this;
     }
-
 
     /**
      * @return Cart[]|ArrayCollection

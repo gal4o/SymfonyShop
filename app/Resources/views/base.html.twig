@@ -19,16 +19,23 @@
                     <div>
                         <ul class="nav navbar-nav navbar-right">
                             {% if app.user %}
+                                {% if app.user.isAdmin() %}
                             <li>
-                                <a href="{{ path('user_index') }}">
+                                <a href="{{ path('users_list') }}">
                                     Users
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{ path('product_index') }}">
-                                    Products
-                                </a>
-                            </li>
+                                    <li>
+                                        <a href="{{ path('products_list') }}">
+                                            Products
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('carts_list') }}">
+                                            Carts
+                                        </a>
+                                    </li>
+                                    {% endif %}
                             <li>
                                 <a href="{{ path('cart_show') }}">
                                     Cart
@@ -40,6 +47,11 @@
                                 </a>
                             </li>
                             {% else %}
+                                <li>
+                                    <a href="{{ path('product_index') }}">
+                                        Products
+                                    </a>
+                                </li>
                             <li>
                                 <a href="{{ path('user_new') }}">
                                     REGISTER
@@ -58,8 +70,11 @@
         </header>
     {% endblock %}
         {% block body %}
-            {% for info in app.flashes %}
-                <div class="flash">{{ info }}</div>
+            {% for msg in app.session.flashbag.get('info') %}
+                <div class="flash">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                    {{ msg }}
+                </div>
             {% endfor %}
         {% endblock %}
         {% block javascripts %}

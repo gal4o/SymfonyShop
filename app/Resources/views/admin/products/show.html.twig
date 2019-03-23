@@ -34,10 +34,11 @@
 
     <ul>
         <li>
-            <a href="{{ path('cart_add', {'id': product.id}) }}">Buy</a>
+            <a href="{{ path('products_list') }}">Back to the products list</a>
         </li>
         <li>
-            <a href="{{ path('product_index') }}">Back to the products list</a>
+            <a href="{{ path('admin_product_edit', { 'id': product.id }) }}">Edit</a>
         </li>
+
     </ul>
 {% endblock %}
