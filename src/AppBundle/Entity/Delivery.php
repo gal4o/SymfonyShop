@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Delivery
@@ -22,6 +23,7 @@ class Delivery
     private $id;
 
     /**
+     * @Assert\NotBlank
      * @var string
      *
      * @ORM\Column(name="address", type="string", length=255)
@@ -29,6 +31,7 @@ class Delivery
     private $address;
 
     /**
+     * @Assert\NotBlank
      * @var string
      *
      * @ORM\Column(name="phone", type="string", length=255)
@@ -36,6 +39,7 @@ class Delivery
     private $phone;
 
     /**
+     * @Assert\NotBlank
      * @var string
      *
      * @ORM\Column(name="payment", type="string", length=255)
@@ -45,7 +49,6 @@ class Delivery
     /**
      * @var Cart
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Cart", mappedBy="delivery")
-     * @ORM\JoinColumn(name="cart_id", referencedColumnName="id")
      */
     private $cart;
 
@@ -61,7 +64,7 @@ class Delivery
      * @param Cart $cart
      * @return Delivery
      */
-    public function setCart($cart = null)
+    public function setCart($cart)
     {
         $this->cart = $cart;
         return $this;
@@ -109,7 +112,7 @@ class Delivery
      *
      * @return Delivery
      */
-    public function setPhone($phone)
+    public function setPhone($phone=null)
     {
         $this->phone = $phone;
 
@@ -133,7 +136,7 @@ class Delivery
      *
      * @return Delivery
      */
-    public function setPayment($payment)
+    public function setPayment($payment=null)
     {
         $this->payment = $payment;
 

@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<div class="container body-content" >
     <h1>Carts list</h1>
 
-    <table>
+    <table border="solid-black">
         <thead>
             <tr>
                 <th>Id</th>
@@ -21,15 +22,12 @@
                 <td>{{ cart.total }}</td>
                 <td>{{ cart.user.fullName }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('cart_show_one', { 'id': cart.id }) }}">show</a>
-                        </li>
-                    </ul>
+                    <a href="{{ path('cart_show_one', { 'id': cart.id }) }}" class="btn btn-primary">show</a>
                 </td>
                 <td>{{ cart.isVerify }}</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+</div>
 {% endblock %}

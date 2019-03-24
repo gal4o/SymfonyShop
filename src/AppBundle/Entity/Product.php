@@ -2,9 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -26,6 +26,7 @@ class Product
     private $id;
 
     /**
+     * @Assert\NotBlank
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
@@ -33,6 +34,8 @@ class Product
     private $name;
 
     /**
+     * @Assert\NotBlank
+     * @Assert\Type("string")
      * @var string
      *
      * @ORM\Column(name="description", type="text")
@@ -40,6 +43,7 @@ class Product
     private $description;
 
     /**
+     * @Assert\NotBlank
      * @var int
      *
      * @ORM\Column(name="quantity", type="integer", nullable=true)
@@ -47,6 +51,7 @@ class Product
     private $quantity;
 
     /**
+     * @Assert\NotBlank
      * @var string
      *
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2)
@@ -66,6 +71,7 @@ class Product
     private $image;
 
     /**
+     * @Assert\NotBlank
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="products")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */

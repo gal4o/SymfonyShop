@@ -20,11 +20,11 @@ class UserType extends AbstractType
             ->add('email')
             ->add('fullName',
                 TextType::class, [
-                'label' =>'fullName',
+                'label' =>'fullName ',
             ])
             ->add('password',
                 PasswordType::class, [
-                    'label' => 'password',
+                    'label' => 'password ',
                 ])
             ;
     }/**

@@ -1,14 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <ul>
-        <li>
-            <a href="{{ path('admin_product_new') }}">Create a new product</a>
-        </li>
-    </ul>
+<div class="container body-content" >
+    <a href="{{ path('admin_product_new') }}" class="btn btn-success">Create a new product</a>
+
     <h1>Products list</h1>
 
-    <table>
+    <table border="solid-black">
         <thead>
             <tr>
                 <th>Id</th>
@@ -26,19 +24,14 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.description }}</td>
                 <td>{{ product.quantity }}</td>
-                <td>{{ product.price }}</td>
+                <td>{{ product.price }}$</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('admin_product_show', { 'id': product.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('admin_product_edit', { 'id': product.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                            <a href="{{ path('admin_product_show', { 'id': product.id }) }}" class="btn-sm btn-primary">show</a>
+                            <a href="{{ path('admin_product_edit', { 'id': product.id }) }}" class="btn-sm btn-warning">edit</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+</div>
 {% endblock %}

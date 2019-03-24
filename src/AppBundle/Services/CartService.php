@@ -28,4 +28,14 @@ class CartService implements CartServiceInterface
         return $cart;
     }
 
+    public function createDelivery(Cart $cart)
+    {
+        $delivery = new Delivery();
+        $delivery->setAddress(null);
+        $delivery->setPayment(null);
+        $delivery->setPhone(null);
+        $delivery->setCart($cart);
+        return $delivery;
+    }
+
 }

@@ -2,15 +2,27 @@
 
 {% block body %}
     <div id="wrapper">
-        <div id="container">
+        <div class="container body-content">
+            {% for msg in app.session.flashbag.get('info') %}
+                <div class="alert alert-dark" role="alert">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                    {{ msg }}
+                </div>
+            {% endfor %}
+            <div class="row">
           {% for product in products %}
-              <div>
-                  {{ product.getName }}
-                  {{ product.getDescription }}
-                  {{ product.getCategory.getName }}
-                  <a href="{{ path('product_show', { 'id': product.id }) }}">show</a>
+              <div class="col-md-3">
+              <div class="card text-center text-white bg-info" style="width: 18rem;">
+                  <img class="card-img-top" src="{{ asset('images_directory/' ~ product.image) }}" alt="Card image cap">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ product.getName }}</h5>
+                      <p>{{ product.getPrice }}$</p>
+                    <a href="{{ path('product_show', { 'id': product.id }) }}" class="btn btn-primary">show</a>
+                  </div>
+              </div>
               </div>
             {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

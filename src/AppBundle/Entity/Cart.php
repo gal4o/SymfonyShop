@@ -59,6 +59,11 @@ class Cart
      */
     private $delivery;
 
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
+
     /**
      * @return Delivery
      */
@@ -92,11 +97,6 @@ class Cart
     public function setIsVerify($isVerify)
     {
         $this->isVerify = $isVerify;
-    }
-
-    public function __construct()
-    {
-        $this->products = new ArrayCollection();
     }
 
     /**

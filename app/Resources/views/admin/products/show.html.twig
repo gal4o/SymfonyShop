@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<div class="container body-content" >
     <h1>Product</h1>
 
-    <table>
+    <table border="solid-black">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -23,7 +24,7 @@
             </tr>
             <tr>
                 <th>Price</th>
-                <td>{{ product.price }}</td>
+                <td>{{ product.price }}$</td>
             </tr>
             <tr>
                 <th>Image</th>
@@ -32,13 +33,8 @@
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('products_list') }}">Back to the products list</a>
-        </li>
-        <li>
-            <a href="{{ path('admin_product_edit', { 'id': product.id }) }}">Edit</a>
-        </li>
+            <a href="{{ path('products_list') }}" class="btn btn-primary">Back to the products list</a>
+            <a href="{{ path('admin_product_edit', { 'id': product.id }) }}" class="btn btn-warning">Edit</a>
 
-    </ul>
+</div>
 {% endblock %}

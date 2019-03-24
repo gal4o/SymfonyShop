@@ -27,9 +27,10 @@ class DeliveryType extends AbstractType
                 'choices' => [
                     '' => false,
                     'cash' => true,
-                    'card' => true,
-                    'ePay' => true,
+                    'card' =>true,
+                    'ePay' =>true,
                 ],
+
             ]);
     }
 

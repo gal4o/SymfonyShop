@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<div class="container body-content" >
     <h1>Cart</h1>
 
-    <table>
+    <table border="solid-black">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -14,9 +15,10 @@
                 <td>{% if cart.products %}
                         {% for product in cart.products %}
                             <div>
-                                <p>{{ product.getName() }}
-                                {{ product.getPrice }}
-                                <a href="{{ path('cart_remove', {'id': product.getId()}) }}">Remove product</a>
+                                <p><a href="{{ path('product_show', {'id': product.getId()}) }}">
+                                        {{ product.getName() }}</a>
+                                {{ product.getPrice }}$
+                                <a href="{{ path('cart_remove', {'id': product.getId()}) }}" class="btn-sm btn-danger">Remove product</a>
                                 </p>
                             </div>
                         {% endfor %}
@@ -24,17 +26,12 @@
             </tr>
             <tr>
                 <th>Total</th>
-                <td>{{ cart.total }}</td>
+                <td>{{ cart.total }}$</td>
             </tr>
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('cart_index') }}">Carts List</a>
-        </li>
-        <li>
-            <a href="{{ path('cart_verify', { 'id': cart.id }) }}">Verify</a>
-        </li>
-    </ul>
+            <a href="{{ path('cart_verify', { 'id': cart.id }) }}" class="btn btn-success">Verify</a>
+            <a href="{{ path('cart_index') }}" class="btn btn-primary">My Carts List</a>
+</div>
 {% endblock %}

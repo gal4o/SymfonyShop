@@ -1,33 +1,32 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<div class="container body-content" >
     <h1>Carts list</h1>
 
-    <table>
+    <table border="solid-black">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>User</th>
                 <th>Total</th>
                 <th>Actions</th>
+                <th>IsVerify</th>
             </tr>
         </thead>
         <tbody>
         {% for cart in carts %}
             <tr>
                 <td><a href="{{ path('admin_cart_show', { 'id': cart.id }) }}">{{ cart.id }}</a></td>
-                <td>{{ cart.total }}</td>
                 <td>{{ cart.user.fullName }}</td>
+                <td>{{ cart.total }}$</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('admin_cart_show', { 'id': cart.id }) }}">show</a>
-                        </li>
-                    </ul>
+                    <a href="{{ path('admin_cart_show', { 'id': cart.id }) }}" class="btn-sm btn-primary">show</a>
                 </td>
                 <td>{{ cart.isVerify }}</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+</div>
 {% endblock %}

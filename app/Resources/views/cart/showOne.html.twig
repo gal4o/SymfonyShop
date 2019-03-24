@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<div class="container body-content" >
     <h1>Cart</h1>
 
-    <table>
+    <table border="solid-black">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -40,9 +41,8 @@
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('cart_index') }}">Back to the carts list</a>
-        </li>
-    </ul>
+    <a href="{{ path('cart_index') }}" class="btn btn-primary">Back to the carts list</a>
+
+
+</div>
 {% endblock %}
